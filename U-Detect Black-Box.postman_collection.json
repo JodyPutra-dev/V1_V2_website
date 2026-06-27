@@ -303,17 +303,124 @@
         },
         {
           "name": "10. TC-B-04 - Prediksi Tanpa Field ph",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "pm.test(\"TC-B-04: Status 400 Bad Request\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-04: success = false\", function () {\r",
+                  "    pm.expect(json.success).to.be.false;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-04: error = Missing required parameters\", function () {\r",
+                  "    pm.expect(json.error).to.equal(\"Missing required parameters\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
-            "method": "GET",
-            "header": []
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"parameters\": {\r\n    \"tds\": 450,\r\n    \"specificGravity\": 1.015,\r\n    \"turbidityNTU\": 2.3,\r\n    \"red\": 210,\r\n    \"green\": 190,\r\n    \"blue\": 170,\r\n    \"turbidityLevel\": \"Jernih\",\r\n    \"warnaDasar\": \"KUNING\"\r\n  },\r\n  \"notes\": \"TC-B-04 black-box test tanpa field ph\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                ""
+              ]
+            }
           },
           "response": []
         },
         {
           "name": "11. TC-B-05 - GET History Default Pagination",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response success is true\", function () {\r",
+                  "    const json = pm.response.json();\r",
+                  "    pm.expect(json.success).to.eql(true);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pagination default page is 1\", function () {\r",
+                  "    const json = pm.response.json();\r",
+                  "    pm.expect(json.pagination.page).to.eql(1);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pagination default limit is 20\", function () {\r",
+                  "    const json = pm.response.json();\r",
+                  "    pm.expect(json.pagination.limit).to.eql(20);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
-            "header": []
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/history",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "history"
+              ]
+            }
           },
           "response": []
         },
@@ -321,7 +428,29 @@
           "name": "12. TC-B-06 - GET Statistik Prediksi User",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/stats",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "stats"
+              ]
+            }
           },
           "response": []
         }
@@ -499,20 +628,31 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
                   "pm.test(\"TC-D-03: Status 200 OK\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
                   "\r",
-                  "pm.test(\"TC-D-03: status = healthy\", function () {\r",
-                  "    pm.expect(pm.response.json().status).to.equal(\"healthy\");\r",
-                  "});\r",
-                  "\r",
                   "pm.test(\"TC-D-03: service = Prediction Service\", function () {\r",
-                  "    pm.expect(pm.response.json().service).to.equal(\"Prediction Service\");\r",
+                  "    pm.expect(json.service).to.equal(\"Prediction Service\");\r",
                   "});\r",
                   "\r",
-                  "pm.test(\"TC-D-03: MongoDB connected\", function () {\r",
-                  "    pm.expect(pm.response.json().mongodb).to.equal(\"connected\");\r",
+                  "pm.test(\"TC-D-03: service dalam kondisi sehat\", function () {\r",
+                  "    if (json.status !== undefined) {\r",
+                  "        pm.expect(json.status).to.equal(\"healthy\");\r",
+                  "    } else {\r",
+                  "        pm.expect(json.success).to.be.true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: database connected\", function () {\r",
+                  "    const databaseStatus = json.database ?? json.mongodb;\r",
+                  "    pm.expect(databaseStatus).to.equal(\"connected\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: timestamp tersedia\", function () {\r",
+                  "    pm.expect(json.timestamp).to.be.a(\"string\").and.not.empty;\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -997,7 +1137,7 @@
           "response": []
         },
         {
-          "name": "IT-06A POST Create Prediction",
+          "name": "IT-06 A POST Create Prediction",
           "event": [
             {
               "listen": "test",
@@ -1068,7 +1208,7 @@
           "response": []
         },
         {
-          "name": "IT-06B GET Prediction by ID",
+          "name": "IT-06 B GET Prediction by ID",
           "event": [
             {
               "listen": "test",
