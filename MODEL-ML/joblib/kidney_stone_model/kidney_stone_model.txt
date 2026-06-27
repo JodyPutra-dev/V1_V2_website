@@ -1,0 +1,5 @@
+name: Kidney Stone Detection Model
+version: 1.0.0
+description: This model predicts the likelihood of kidney stone formation based on urine sample analysis. It uses a Random Forest classifier trained on urine sample data with features including pH, TDS (Total Dissolved Solids), specific gravity, turbidity (NTU), RGB color values, turbidity level, and base color.
+accuracy: 0.92
+filePath: MODEL-ML/joblib/kidney_stone_model/kidney_stone_model.joblib

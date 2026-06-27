@@ -1,0 +1,14 @@
+# Python dependencies for ML prediction service
+# Required by python_bridge.py for loading and running kidney stone model
+
+# joblib - Model serialization/deserialization (required for .joblib files)
+joblib>=1.0.0
+
+# scikit-learn - ML framework used to train the model
+scikit-learn>=0.24.0
+
+# numpy - Array operations for feature vectors
+numpy>=1.19.0
+
+# pandas - Data manipulation (commonly used with scikit-learn models)
+pandas>=1.1.0

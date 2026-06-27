@@ -1,0 +1,70 @@
+{
+  "name": "urine-disease-detection-v1-baseline",
+  "version": "1.0.0-v1-baseline",
+  "description": "Version 1 (Non-NGINX Baseline) - Demonstrates Node.js deployment with common performance mistakes",
+  "main": "microservices/gateway/gateway.js",
+  "scripts": {
+    "start": "./start.sh",
+    "stop": "./stop.sh",
+    "start:gateway": "node microservices/gateway/gateway.js",
+    "start:user": "node microservices/user/user-service.js",
+    "start:admin": "node microservices/admin/admin-service.js",
+    "start:ml": "node microservices/ml/ml-service.js",
+    "start:prediction": "node microservices/prediction/prediction-service.js",
+    "build:frontend": "cd frontend && REACT_APP_DIRECT_API=true REACT_APP_USE_NGINX=false REACT_APP_DIRECT_PROD=true npm run build",
+    "test:load": "k6 run -e MODE=direct -e VUS=100 -e BASE_URL=http://localhost:7764 ../../K6/k6-prediction-focused-test.js",
+    "test:load:10": "k6 run -e MODE=direct -e VUS=10 ../../K6/k6-prediction-focused-test.js",
+    "test:load:25": "k6 run -e MODE=direct -e VUS=25 ../../K6/k6-prediction-focused-test.js",
+    "test:load:50": "k6 run -e MODE=direct -e VUS=50 ../../K6/k6-prediction-focused-test.js",
+    "test:load:100": "k6 run -e MODE=direct -e VUS=100 ../../K6/k6-prediction-focused-test.js",
+    "test:pool": "node test-connection-pool.js --concurrent 50",
+    "test:pool:verbose": "node test-connection-pool.js --concurrent 50 --verbose",
+    "test:pool:100": "node test-connection-pool.js --concurrent 100",
+    "test:ml": "node test-ml-predictions.js",
+    "test:ml:stress": "node test-ml-predictions.js --stress",
+    "test:device-token": "node test-device-token.js",
+    "test:hydration": "bash test-hydration-analysis.sh"
+  },
+  "dependencies": {
+    "abort-controller": "^3.0.0",
+    "axios": "^1.9.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
+    "express-rate-limit": "^8.2.1",
+    "form-data": "^4.0.0",
+    "helmet": "^6.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^6.13.8",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^2.7.0",
+    "nodemailer": "^7.0.3",
+    "sharp": "^0.34.5",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "ml",
+    "urine-detection",
+    "thesis",
+    "performance",
+    "baseline"
+  ],
+  "author": "Thesis Research - Version 1 Baseline"
+}

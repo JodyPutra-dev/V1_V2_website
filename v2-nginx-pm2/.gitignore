@@ -1,0 +1,82 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.env.local
+frontend/.env.production.local
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/*.log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/*
+!tmp/.gitkeep
+
+# Uploads (user data)
+uploads/*
+!uploads/.gitkeep
+
+# PM2
+.pm2/
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Test results
+results/
+coverage/
+*.json
+!package.json
+!ecosystem.config.js
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Build output
+dist/
+build/
+out/
+
+# Certificates (if sensitive)
+# Uncomment if SSL certs should not be committed
+# ssl/*.pem
+# ssl/*.key
+# ssl/*.crt
+
+# Database backups
+*.dump
+*.sql
+*.sqlite
+
+# Sensitive data
+.env.production
+.env.staging

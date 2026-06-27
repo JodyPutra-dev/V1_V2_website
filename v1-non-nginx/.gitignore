@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables (contains secrets)
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/*.log
+logs/*.pid
+*.log
+
+# Temporary files
+tmp/*
+!tmp/.gitkeep
+
+# Uploads (user data)
+uploads/*
+!uploads/.gitkeep
+
+# Frontend build
+frontend/build/
+frontend/node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# Test results
+results/
+*.json
+!package.json
+!package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Misc
+.cache/
+coverage/
+.nyc_output/

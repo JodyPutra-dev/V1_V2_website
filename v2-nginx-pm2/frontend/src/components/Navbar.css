@@ -1,0 +1,87 @@
+/* Navbar Styles */
+.navbar {
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.nav-link {
+  position: relative;
+  margin-right: 0.5rem;
+  padding: 0.5rem 0.8rem !important;
+  color: var(--gray-700) !important;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+  background-color: rgba(74, 111, 165, 0.08);
+}
+
+.nav-link.active {
+  color: var(--primary-color) !important;
+  background-color: rgba(74, 111, 165, 0.12);
+}
+
+.navbar-nav .dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  padding: 0.6rem 1.2rem;
+  color: var(--gray-700);
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(74, 111, 165, 0.08);
+  color: var(--primary-color);
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+  border-top: 1px solid var(--gray-300);
+}
+
+/* Admin badge */
+.admin-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: var(--primary-color);
+  color: white;
+  margin-left: 0.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 992px) {
+  .navbar-nav {
+    padding: 1rem 0;
+  }
+  
+  .nav-link {
+    padding: 0.75rem !important;
+    margin-bottom: 0.25rem;
+  }
+  
+  .navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+} 

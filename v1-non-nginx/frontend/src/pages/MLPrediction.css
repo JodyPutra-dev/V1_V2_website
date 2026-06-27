@@ -1,0 +1,96 @@
+/* RGB Color Preview Box */
+.rgb-color-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  border: 2px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  transition: background-color 0.3s ease;
+}
+
+.rgb-color-preview-label {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* RGB Sliders Container */
+.rgb-sliders-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.rgb-slider-group {
+  margin-bottom: 15px;
+}
+
+.rgb-slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.rgb-value-badge {
+  min-width: 45px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Form Section Title */
+.form-section-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Categorical Field Info */
+.categorical-field-info {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+  .rgb-color-preview {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .rgb-sliders-container {
+    padding: 15px;
+  }
+  
+  .rgb-slider-group {
+    margin-bottom: 12px;
+  }
+  
+  .form-section-title {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .rgb-color-preview {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .rgb-color-preview-label {
+    font-size: 0.75rem;
+  }
+}

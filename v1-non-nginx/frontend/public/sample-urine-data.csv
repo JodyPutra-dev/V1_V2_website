@@ -1,0 +1,6 @@
+ph,tds,specificGravity,turbidityNTU,red,green,blue,turbidityLevel,warnaDasar
+6.5,800,1.015,5.2,255,220,150,Jernih,KUNING
+7.0,1200,1.020,15.5,200,100,80,Agak Keruh,COKLAT
+5.5,500,1.010,3.0,255,255,240,Jernih,BENING
+6.8,1500,1.025,35.0,180,50,50,Keruh,MERAH
+7.2,900,1.018,8.0,255,200,100,Jernih,ORANGE
