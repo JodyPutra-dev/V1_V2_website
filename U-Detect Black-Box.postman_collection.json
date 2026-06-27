@@ -1,0 +1,1201 @@
+{
+  "info": {
+    "_postman_id": "92598e4d-9289-4967-82e9-edd1308caf6f",
+    "name": "U-Detect Black-Box",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37868294"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "5. TC-A-01 - Login Email Tidak Terdaftar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-A-08: Status 401 Unauthorized\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-A-08: success = false\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.false;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"tidak.ada.sama.sekali@udetect.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6. TC-A-02 - GET /api/auth/me Tanpa Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-A-15: Status 401 Unauthorized\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-A-15: success = false\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.false;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-A-15: message sesuai\", function () {\r",
+                  "    pm.expect(pm.response.json().message).to.match(/authentication|required|token/i);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/me",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Prediction",
+      "item": [
+        {
+          "name": "7. TC-B-01 - Buat Prediksi Valid",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-B-01: Status 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-01: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-01: data._id ada dan simpan PREDICTION_ID\", function () {\r",
+                  "    const id = pm.response.json().data._id;\r",
+                  "    pm.expect(id).to.exist;\r",
+                  "    pm.expect(id).to.be.a(\"string\").and.not.empty;\r",
+                  "    pm.environment.set(\"PREDICTION_ID\", id);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-01: data.penyakit terisi\", function () {\r",
+                  "    pm.expect(pm.response.json().data.penyakit).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"parameters\": {\r\n    \"ph\": 6.5,\r\n    \"tds\": 450,\r\n    \"specificGravity\": 1.015,\r\n    \"turbidityNTU\": 2.3,\r\n    \"red\": 210,\r\n    \"green\": 190,\r\n    \"blue\": 170,\r\n    \"turbidityLevel\": \"Jernih\",\r\n    \"warnaDasar\": \"KUNING\"\r\n  },\r\n  \"notes\": \"TC-B-01 black box test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "8. TC-B-02 - Ambil Prediksi by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-B-25: Status 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-25: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-25: ID di respons cocok dengan yang diminta\", function () {\r",
+                  "    pm.expect(pm.response.json().data._id).to.equal(pm.environment.get(\"PREDICTION_ID\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/{{PREDICTION_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "{{PREDICTION_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "9. TC-B-03 - Buat Prediksi Tanpa Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-B-03: Status 401 Unauthorized\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-03: success = false\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.false;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"parameters\": {\r\n    \"ph\": 6.5,\r\n    \"tds\": 450,\r\n    \"specificGravity\": 1.015,\r\n    \"turbidityNTU\": 2.3,\r\n    \"red\": 210,\r\n    \"green\": 190,\r\n    \"blue\": 170,\r\n    \"turbidityLevel\": \"Jernih\",\r\n    \"warnaDasar\": \"KUNING\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "10. TC-B-04 - Prediksi Tanpa Field ph",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "11. TC-B-05 - GET History Default Pagination",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "12. TC-B-06 - GET Statistik Prediksi User",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CSV Upload",
+      "item": [
+        {
+          "name": "13. TC-C-01 - Upload CSV Valid",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-C-01: Status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-C-01: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-C-01: total = 3 baris\", function () {\r",
+                  "    pm.expect(pm.response.json().data.total).to.equal(3);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-C-01: processed = 3\", function () {\r",
+                  "    pm.expect(pm.response.json().data.processed).to.equal(3);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-C-01: failed = 0\", function () {\r",
+                  "    pm.expect(pm.response.json().data.failed).to.equal(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "csv",
+                  "description": "ph,tds,specificGravity,turbidityNTU,red,green,blue,turbidityLevel,warnaDasar 6.5,800,1.015,5.2,255,220,150,Jernih,KUNING 7.0,1200,1.020,15.5,200,100,80,Agak Keruh,COKLAT 5.5,500,1.010,3.0,255,255,240,Jernih,BENING 6.8,1500,1.025,35.0,180,50,50,Keruh,MERAH 7.2,900,1.018,8.0,255,200,100,Jernih,ORANGE",
+                  "type": "file",
+                  "uuid": "344c5619-5c0c-420b-b86e-09c4074c7592",
+                  "src": "postman-cloud:///1f13f59a-3c23-48d0-aae7-f8a8fb05177c"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/csv",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "csv"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "2. TC-D-01 - Health Check Gateway",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-D-01: Status 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-01: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-01: database connected\", function () {\r",
+                  "    pm.expect(pm.response.json().database.connection).to.equal(\"connected\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-01: versi backend sesuai environment aktif\", function () {\r",
+                  "    const aktual = pm.response.json().version;\r",
+                  "    const ekspektasi = pm.environment.get(\"VERSION\");\r",
+                  "    pm.expect(aktual).to.equal(ekspektasi);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. TC-D-02 - Health Check Auth Service",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-D-02: Status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-02: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-02: Database connected\", function () {\r",
+                  "    pm.expect(pm.response.json().database.status).to.equal(\"connected\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/healthcheck",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "healthcheck"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. TC-D-03 - Health Check Prediction Service",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-D-03: Status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: service = Prediction Service\", function () {\r",
+                  "    pm.expect(pm.response.json().service).to.equal(\"Prediction Service\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Setup",
+      "item": [
+        {
+          "name": "1. S-01 - Login & Store Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"[SETUP-01] Status 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"[SETUP-01] success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"[SETUP-01] Token ada dan disimpan\", function () {\r",
+                  "    const json = pm.response.json();\r",
+                  "    pm.expect(json.token).to.be.a(\"string\").and.not.empty;\r",
+                  "    pm.environment.set(\"TOKEN\", json.token);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"[SETUP-01] user.email sesuai\", function () {\r",
+                  "    pm.expect(pm.response.json().user.email).to.equal(pm.environment.get(\"TEST_EMAIL\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"{{TEST_EMAIL}}\",\r\n  \"password\": \"{{TEST_PASSWORD}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Integration Testing",
+      "item": [
+        {
+          "name": "IT-00 Login & Store Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"[SETUP-01] Status 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"[SETUP-01] success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"[SETUP-01] Token ada dan disimpan\", function () {\r",
+                  "    const json = pm.response.json();\r",
+                  "    pm.expect(json.token).to.be.a(\"string\").and.not.empty;\r",
+                  "    pm.environment.set(\"TOKEN\", json.token);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"[SETUP-01] user.email sesuai\", function () {\r",
+                  "    pm.expect(pm.response.json().user.email).to.equal(pm.environment.get(\"TEST_EMAIL\"));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"{{TEST_EMAIL}}\",\r\n  \"password\": \"{{TEST_PASSWORD}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-01 Client to Gateway",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-D-01: Status 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-01: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-01: database connected\", function () {\r",
+                  "    pm.expect(pm.response.json().database.connection).to.equal(\"connected\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-01: versi backend sesuai environment aktif\", function () {\r",
+                  "    const aktual = pm.response.json().version;\r",
+                  "    const ekspektasi = pm.environment.get(\"VERSION\");\r",
+                  "    pm.expect(aktual).to.equal(ekspektasi);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "IT-02 Gateway to Auth Service and MongoDB",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-D-02: Status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-02: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-02: Database connected\", function () {\r",
+                  "    pm.expect(pm.response.json().database.status).to.equal(\"connected\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/healthcheck",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "healthcheck"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-03-V1 Gateway to Prediction Service and MongoDB",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-D-03: Status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: status = healthy\", function () {\r",
+                  "    pm.expect(pm.response.json().status).to.equal(\"healthy\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: service = Prediction Service\", function () {\r",
+                  "    pm.expect(pm.response.json().service).to.equal(\"Prediction Service\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-D-03: mongodb = connected\", function () {\r",
+                  "    pm.expect(pm.response.json().mongodb).to.equal(\"connected\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-03-V2 Gateway to Prediction Service and MongoDB",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"IT-03: Status 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"IT-03: Prediction Service merespons normal\", function () {\r",
+                  "    pm.expect(json.service).to.eql(\"Prediction Service\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-03: Database connected\", function () {\r",
+                  "    const dbStatus = json.database || json.mongodb;\r",
+                  "\r",
+                  "    pm.expect(dbStatus).to.eql(\"connected\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-03: Service dalam kondisi healthy/normal\", function () {\r",
+                  "    const isHealthy =\r",
+                  "        json.success === true ||\r",
+                  "        json.status === \"healthy\";\r",
+                  "\r",
+                  "    pm.expect(isHealthy).to.eql(true);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-04 Buat Prediksi Valid",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"TC-B-01: Status 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-01: success = true\", function () {\r",
+                  "    pm.expect(pm.response.json().success).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-01: data._id ada dan simpan PREDICTION_ID\", function () {\r",
+                  "    const id = pm.response.json().data._id;\r",
+                  "    pm.expect(id).to.exist;\r",
+                  "    pm.expect(id).to.be.a(\"string\").and.not.empty;\r",
+                  "    pm.environment.set(\"PREDICTION_ID\", id);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"TC-B-01: data.penyakit terisi\", function () {\r",
+                  "    pm.expect(pm.response.json().data.penyakit).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"parameters\": {\r\n    \"ph\": 6.5,\r\n    \"tds\": 450,\r\n    \"specificGravity\": 1.015,\r\n    \"turbidityNTU\": 2.3,\r\n    \"red\": 210,\r\n    \"green\": 190,\r\n    \"blue\": 170,\r\n    \"turbidityLevel\": \"Jernih\",\r\n    \"warnaDasar\": \"KUNING\"\r\n  },\r\n  \"notes\": \"TC-B-01 black box test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-05 Buat Prediksi Valid ML Service",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"IT-05: Status 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-05: field result ada dan berupa array\", function () {\r",
+                  "    const result = pm.response.json().data.result;\r",
+                  "    pm.expect(result).to.be.an(\"array\").and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-05: field penyakit ada dan terisi\", function () {\r",
+                  "    const penyakit = pm.response.json().data.penyakit;\r",
+                  "    pm.expect(penyakit).to.be.a(\"string\").and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-05: field hydrationAnalysis ada\", function () {\r",
+                  "    const hydration = pm.response.json().data.hydrationAnalysis;\r",
+                  "    pm.expect(hydration).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-05: hydrationAnalysis.hydrationStatus terisi\", function () {\r",
+                  "    const status = pm.response.json().data.hydrationAnalysis.hydrationStatus;\r",
+                  "    pm.expect(status).to.be.a(\"string\").and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"IT-05: hydrationAnalysis.recommendation terisi\", function () {\r",
+                  "    const rec = pm.response.json().data.hydrationAnalysis.recommendation;\r",
+                  "    pm.expect(rec).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"parameters\": {\r\n    \"ph\": 6.5,\r\n    \"tds\": 450,\r\n    \"specificGravity\": 1.015,\r\n    \"turbidityNTU\": 2.3,\r\n    \"red\": 210,\r\n    \"green\": 190,\r\n    \"blue\": 170,\r\n    \"turbidityLevel\": \"Jernih\",\r\n    \"warnaDasar\": \"KUNING\"\r\n  },\r\n  \"notes\": \"TC-B-01 black box test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-06A POST Create Prediction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201 - prediction created\", () => {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Prediction ID berhasil disimpan ke environment\", () => {\r",
+                  "    const json = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(json.success).to.eql(true);\r",
+                  "\r",
+                  "    const predictionId =\r",
+                  "        json?.data?._id ||\r",
+                  "        json?.prediction?._id ||\r",
+                  "        json?._id;\r",
+                  "\r",
+                  "    pm.expect(predictionId, \"Prediction ID tidak ditemukan di response\").to.exist;\r",
+                  "\r",
+                  "    pm.environment.set(\"integration_prediction_id\", predictionId);\r",
+                  "\r",
+                  "    console.log(\"integration_prediction_id:\", predictionId);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"parameters\": {\r\n    \"ph\": 6.5,\r\n    \"tds\": 450,\r\n    \"specificGravity\": 1.015,\r\n    \"turbidityNTU\": 2.3,\r\n    \"red\": 210,\r\n    \"green\": 190,\r\n    \"blue\": 170,\r\n    \"turbidityLevel\": \"Jernih\",\r\n    \"warnaDasar\": \"KUNING\"\r\n  },\r\n  \"notes\": \"TC-B-01 black box test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-06B GET Prediction by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200 - prediction found\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"ID hasil baca sama dengan ID hasil tulis\", () => {\r",
+                  "    const json = pm.response.json();\r",
+                  "\r",
+                  "    const storedId = pm.environment.get(\"integration_prediction_id\");\r",
+                  "\r",
+                  "    pm.expect(storedId, \"integration_prediction_id belum tersimpan\").to.exist;\r",
+                  "    pm.expect(json.success).to.eql(true);\r",
+                  "    pm.expect(json.data._id).to.eql(storedId);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/predict/{{integration_prediction_id}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "predict",
+                "{{integration_prediction_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "IT-07 NGINX to PM2 Worker Distribution",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200 - Gateway health check berhasil\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response memiliki informasi worker PM2\", () => {\r",
+                  "    const json = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(json.success).to.eql(true);\r",
+                  "\r",
+                  "    pm.expect(\r",
+                  "        json.instanceId || json.instance || json.pid || json.server,\r",
+                  "        \"Response tidak memiliki penanda worker\"\r",
+                  "    ).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "const instanceId = json.instanceId || json.instance || \"unknown\";\r",
+                  "const pid = json.pid || \"unknown\";\r",
+                  "const port = json.server?.port || json.port || \"unknown\";\r",
+                  "\r",
+                  "let calls = pm.environment.get(\"it07_worker_calls\");\r",
+                  "\r",
+                  "if (!calls) {\r",
+                  "    calls = [];\r",
+                  "} else {\r",
+                  "    calls = JSON.parse(calls);\r",
+                  "}\r",
+                  "\r",
+                  "calls.push({\r",
+                  "    instanceId,\r",
+                  "    pid,\r",
+                  "    port\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"it07_worker_calls\", JSON.stringify(calls));\r",
+                  "\r",
+                  "console.log(\"IT-07 Worker Call:\", {\r",
+                  "    call: calls.length,\r",
+                  "    instanceId,\r",
+                  "    pid,\r",
+                  "    port\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Worker call tercatat\", () => {\r",
+                  "    pm.expect(calls.length).to.be.greaterThan(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
